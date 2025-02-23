@@ -29,61 +29,52 @@ const Search = () => {
         }
     };
 
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
-            handleSearch(e);
-        }
-    };
-
     return (
-        <div className="container mx-auto p-4 min-h-screen bg-gradient-to-r from-gey-600 via-hrey-800 to-grey-900">
-            <h1 className="text-3xl font-bold text-center mb-6 text-white">Search Movies</h1>
-            <form onSubmit={handleSearch} className="mb-6 flex flex-col items-center">
+        <div className="min-h-screen bg-gray-900 text-white p-6 flex flex-col items-center">
+            <h1 className="text-4xl font-bold mb-6 text-center">Movie Search</h1>
+            <form onSubmit={handleSearch} className="w-full max-w-lg flex flex-col sm:flex-row gap-4">
                 <input
                     type="text"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    onKeyPress={handleKeyPress}
                     placeholder="Search for a movie..."
-                    className="border-2 border-gray-300 rounded-lg p-3 w-full max-w-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 mb-4"
+                    className="flex-grow p-3 rounded-lg text-black outline-none border-2 border-gray-400 focus:border-blue-500 transition-all"
                 />
                 <button
                     type="submit"
-                    className="bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition-all duration-300"
+                    className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg transition-all"
                 >
                     Search
                 </button>
             </form>
 
             {loading && (
-                <div className="flex justify-center">
+                <div className="mt-6 flex justify-center">
                     <div className="animate-spin border-4 border-t-transparent border-blue-500 rounded-full w-12 h-12"></div>
                 </div>
             )}
 
             {error && (
-                <div className="bg-red-500 text-white p-4 rounded-lg text-center mb-4">
+                <div className="mt-6 bg-red-500 text-white p-4 rounded-lg text-center">
                     {error}
                 </div>
             )}
 
-            <div>
+            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full max-w-6xl">
                 {results.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                        {results.map((movie, index) => (
-                            <div key={index} className="bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300">
-                                <img 
-                                    src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} 
-                                    alt={movie.title} 
-                                    className="w-full h-auto rounded-md mb-4" 
-                                />
-                                <h2 className="text-lg font-semibold text-gray-800">{movie.title}</h2>
-                                <p className="text-gray-600 text-sm">{movie.overview.slice(0, 100)}...</p>
-                            </div>
-                        ))}
-                    </div>
+                    results.map((movie, index) => (
+                        <div key={index} className="bg-gray-800 p-4 rounded-lg shadow-lg hover:shadow-xl transition-all">
+                            <img 
+                                src={movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : 'https://via.placeholder.com/200'}
+                                alt={movie.title} 
+                                className="w-full h-auto rounded-md mb-4" 
+                            />
+                            <h2 className="text-lg font-semibold text-white">{movie.title}</h2>
+                            <p className="text-gray-400 text-sm">{movie.overview.slice(0, 100)}...</p>
+                        </div>
+                    ))
                 ) : (
-                    <p className="text-center text-gray-500">No results found</p>
+                    <p className="text-center text-gray-400 col-span-full">No results found</p>
                 )}
             </div>
         </div>
